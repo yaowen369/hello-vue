@@ -24,7 +24,7 @@
     </div>
 
     <div id="app-8"
-         :class="classObject"
+         :class="[{active: isActive}, errorClass]"
     >
       测试class的绑定
     </div>
@@ -47,8 +47,8 @@ export default {
     return {
       message: 'Hello Vue!',
       message2: '页面加载于 ' + new Date().toLocaleString(),
-      isActive: true,
-      hasError: true
+      isActive:1,
+      errorClass: 'text-danger'
     }
   },
 
@@ -75,13 +75,7 @@ export default {
     reverseMessage: function () {
       console.log('计算属性 computed, ');
       return  this.message.split('').reverse().join('')
-    },
-    classObject: function (){
-      return {
-        active: this.isActive,
-        'text-danger': this.hasError
-      }
-    },
+    }
   },
   components: {
     TodoItem,
