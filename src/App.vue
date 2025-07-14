@@ -29,6 +29,12 @@
       测试class的绑定
     </div>
 
+    <div id="app-9"
+      :style="styleObject"
+    >
+      测试style的绑定
+    </div>
+
 <!--    这个组件始终没有引用成功，还没找到原因 -->
 <!--    <ol>-->
 <!--      <todo-item></todo-item>-->
@@ -47,8 +53,10 @@ export default {
     return {
       message: 'Hello Vue!',
       message2: '页面加载于 ' + new Date().toLocaleString(),
-      isActive:1,
-      errorClass: 'text-danger'
+      isActive: 0,
+      errorClass: '',
+      activeColor: 'red',
+      fontSize: 10
     }
   },
 
@@ -75,6 +83,12 @@ export default {
     reverseMessage: function () {
       console.log('计算属性 computed, ');
       return  this.message.split('').reverse().join('')
+    },
+    styleObject: function (){
+      return {
+        color:`blue`,
+        fontSize:'45px'
+      }
     }
   },
   components: {
