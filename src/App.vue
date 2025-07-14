@@ -23,11 +23,16 @@
       <p>通过计算属性,来自动的反转message : {{reverseMessage}}</p>
     </div>
 
+    <div id="app-8"
+         :class="classObject"
+    >
+      测试class的绑定
+    </div>
+
 <!--    这个组件始终没有引用成功，还没找到原因 -->
 <!--    <ol>-->
 <!--      <todo-item></todo-item>-->
 <!--    </ol>-->
-
 <!--    <HelloWorld msg="Welcome to Your Vue.js App"/>-->
   </div>
 </template>
@@ -41,7 +46,9 @@ export default {
   data() {
     return {
       message: 'Hello Vue!',
-      message2: '页面加载于 ' + new Date().toLocaleString()
+      message2: '页面加载于 ' + new Date().toLocaleString(),
+      isActive: true,
+      hasError: true
     }
   },
 
@@ -68,7 +75,13 @@ export default {
     reverseMessage: function () {
       console.log('计算属性 computed, ');
       return  this.message.split('').reverse().join('')
-    }
+    },
+    classObject: function (){
+      return {
+        active: this.isActive,
+        'text-danger': this.hasError
+      }
+    },
   },
   components: {
     TodoItem,
@@ -85,5 +98,14 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+
+
+.active {
+  font-size: 40px;
+}
+
+.text-danger {
+  color: red;
 }
 </style>
