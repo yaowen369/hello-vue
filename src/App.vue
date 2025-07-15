@@ -35,6 +35,21 @@
       测试style的绑定
     </div>
 
+    <div>{{loginType === 'username'}}</div>
+    <div style="background:yellow; display: flex; flex-direction: column">
+      <template v-show="loginType === 'username'">
+        <label>UserName</label>
+        <input placeholder="enter your username" key="username-key"/>
+      </template>
+      <template>
+        <label>Email</label>
+        <input placeholder="enter your email" key="email-key"/>
+      </template>
+      <button @click="switchLogin">切换登录方式</button>
+    </div>
+
+
+
 <!--    这个组件始终没有引用成功，还没找到原因 -->
 <!--    <ol>-->
 <!--      <todo-item></todo-item>-->
@@ -53,10 +68,11 @@ export default {
     return {
       message: 'Hello Vue!',
       message2: '页面加载于 ' + new Date().toLocaleString(),
-      isActive: 0,
+      isActive: 0.0,
       errorClass: '',
       activeColor: 'red',
-      fontSize: 10
+      fontSize: 10,
+      loginType:''
     }
   },
 
@@ -77,6 +93,9 @@ export default {
     console.log('生命周期函数, destroyed');
    },
   methods: {
+    switchLogin:function () {
+      this.loginType = (this.loginType==='username') ? 'emal' : 'username';
+    }
   },
 
   computed: {
