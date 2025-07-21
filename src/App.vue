@@ -1,7 +1,7 @@
 <template>
-  <div id="app">
+  <div>
     <div>
-      {{message}}
+      {{ message }}
     </div>
 
     <div id="app-2">
@@ -20,7 +20,7 @@
     </div>
 
     <div id="app-7">
-      <p>通过计算属性,来自动的反转message : {{reverseMessage}}</p>
+      <p>通过计算属性,来自动的反转message : {{ reverseMessage }}</p>
     </div>
 
     <div id="app-8"
@@ -30,12 +30,12 @@
     </div>
 
     <div id="app-9"
-      :style="styleObject"
+         :style="styleObject"
     >
       测试style的绑定
     </div>
 
-    <div>{{loginType === 'username'}}</div>
+    <div>{{ loginType === 'username' }}</div>
     <div style="background:yellow; display: flex; flex-direction: column">
       <template v-show="loginType === 'username'">
         <label>UserName</label>
@@ -49,12 +49,24 @@
     </div>
 
 
+    <ul id="app-11">
+      <li v-for="(item) of items" v-bind:key="item.id">
+        for 循环：{{message}} - {{item.message}}
+      </li>
+    </ul>
 
-<!--    这个组件始终没有引用成功，还没找到原因 -->
-<!--    <ol>-->
-<!--      <todo-item></todo-item>-->
-<!--    </ol>-->
-<!--    <HelloWorld msg="Welcome to Your Vue.js App"/>-->
+    <ul id="app-12">
+      <li v-for="(value, name, index) in object">
+        {{ value }} -- {{name}} -- {{index}}
+      </li>
+    </ul>
+
+
+    <!--    这个组件始终没有引用成功，还没找到原因 -->
+    <!--    <ol>-->
+    <!--      <todo-item></todo-item>-->
+    <!--    </ol>-->
+    <!--    <HelloWorld msg="Welcome to Your Vue.js App"/>-->
   </div>
 </template>
 
@@ -72,41 +84,54 @@ export default {
       errorClass: '',
       activeColor: 'red',
       fontSize: 10,
-      loginType:''
+      loginType: '',
+      items: [
+        {message: 'FOO1'},
+        {message: 'Baz'},
+        {message: 'BAR'},
+
+      ],
+      object : {
+
+
+        publish : '中国文艺出版社',
+        author: '刘慈欣',
+        title: '《三体》',
+      }
     }
   },
 
-  beforeCreate:function () {
-    console.log('生命周期函数, beforeCreate'+ "," + this);
-   },
+  beforeCreate: function () {
+    console.log('生命周期函数, beforeCreate' + "," + this);
+  },
   mounted: function () {
-    console.log('生命周期函数, mounted'+ "," + this);
+    console.log('生命周期函数, mounted' + "," + this);
   },
   created: function () {
     console.log('生命周期函数, created' + "," + this);
   },
 
-  updated:function () {
+  updated: function () {
     console.log('生命周期函数, updated');
-   },
-  destroyed:function () {
+  },
+  destroyed: function () {
     console.log('生命周期函数, destroyed');
-   },
+  },
   methods: {
-    switchLogin:function () {
-      this.loginType = (this.loginType==='username') ? 'emal' : 'username';
+    switchLogin: function () {
+      this.loginType = (this.loginType === 'username') ? 'emal' : 'username';
     }
   },
 
   computed: {
     reverseMessage: function () {
       console.log('计算属性 computed, ');
-      return  this.message.split('').reverse().join('')
+      return this.message.split('').reverse().join('')
     },
-    styleObject: function (){
+    styleObject: function () {
       return {
-        color:`blue`,
-        fontSize:'45px'
+        color: `blue`,
+        fontSize: '45px'
       }
     }
   },
