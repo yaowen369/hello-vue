@@ -14,26 +14,48 @@
       <button v-on:click="reverseMessage">反转消息</button>
     </div>
 
+    <div class="split"> app-6 </div>
     <div id="app-6">
-      <p>message</p>
-      <input v-model="message">
+      <input v-model="message" placeholder="edit me">
+      <p>输入的message is： {{message}}</p>
     </div>
 
+    <div class="split"> app-7 </div>
     <div id="app-7">
-      <p>通过计算属性,来自动的反转message : {{ reverseMessage }}</p>
+      <span>Multiline message is:</span>
+      <p style="white-space: pre-line">{{message}}</p>
+      <br>
+      <textarea v-model="message" placeholder="add multiple lines"></textarea>
     </div>
 
-    <div id="app-8"
-         :class="[{active: isActive}, errorClass]"
-    >
-      测试class的绑定
+
+    <div class="split"> app-8 </div>
+    <div id="app-8">
+      <input type="checkbox" id="jack" value="Jack" v-model="checkedNames">
+      <label for="jack">Jack</label>
+
+      <input type="checkbox" id="john" value="John" v-model="checkedNames">
+      <label for="john">John</label>
+
+      <input type="checkbox" id="mike" value="Mike" v-model="checkedNames">
+      <label for="mike">Mike</label>
+
+      <br>
+      <span>Checked names: {{ checkedNames }}</span>
     </div>
 
-    <div id="app-9"
-         :style="styleObject"
-    >
-      测试style的绑定
+    <div class="split"> app-9 </div>
+    <div id="app-9">
+      <input type="radio" id="one" value="One" v-model.lazy="picked">
+      <label for="one">One</label>
+      <br>
+      <input type="radio" id="two" value="Two" v-model.trim="picked">
+      <label for="two">Two</label>
+      <br>
+      <span>Picked: {{picked}}</span>
     </div>
+
+    <div class="split"> app-10 </div>
 
     <div>{{ loginType === 'username' }}</div>
     <div style="background:yellow; display: flex; flex-direction: column">
@@ -49,12 +71,14 @@
     </div>
 
     <div class="split"> app-11 </div>
-    <ul id="app-11">
-      <template v-for="item in items">
-        <li>{{item.message}}</li>
-        <li class="divider" role="presentation"> ---- </li>
-      </template>
-    </ul>
+    <div id="app-11">
+      <select v-model="selected">
+        <option v-for="option in options" v-bind:value="option.value">
+          {{option.text}}
+        </option>
+      </select>
+      <span>Selected: {{ selected }}</span>
+    </div>
 
     <div class="split"> app-12 </div>
     <ul id="app-12">
@@ -110,7 +134,7 @@ export default {
   data() {
     return {
       count:0,
-      message: 'Hello Vue!',
+      message: '',
       message2: '页面加载于 ' + new Date().toLocaleString(),
       isActive: 0.0,
       errorClass: '',
@@ -129,7 +153,15 @@ export default {
         title: '《三体》',
       },
       numbers: [1, 2, 3, 4, 5],
-      sets:[[1, 2, 3, 4, 5], [6, 7, 8, 9, 10]]
+      sets:[[1, 2, 3, 4, 5], [6, 7, 8, 9, 10]],
+      checkedNames:[ ],
+      picked:null,
+      selected:'',
+      options: [
+        {text: 'One', value: 'A'},
+        {text: 'Two', value: 'B'},
+        {text: 'Three', value: 'C'},
+      ],
     }
   },
 
