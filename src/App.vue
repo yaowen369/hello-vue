@@ -48,19 +48,50 @@
       <button @click="switchLogin">切换登录方式</button>
     </div>
 
-
+    <div class="split"> app-11 </div>
     <ul id="app-11">
-      <li v-for="(item) of items" v-bind:key="item.id">
-        for 循环：{{message}} - {{item.message}}
-      </li>
+      <template v-for="item in items">
+        <li>{{item.message}}</li>
+        <li class="divider" role="presentation"> ---- </li>
+      </template>
     </ul>
 
+    <div class="split"> app-12 </div>
     <ul id="app-12">
-      <li v-for="(value, name, index) in object">
-        {{ value }} -- {{name}} -- {{index}}
+      <li v-for="(value, key, index) in object">
+        ～ {{ value }} -- {{key}} -- {{index}}
       </li>
     </ul>
 
+    <div class="split"> app-13 </div>
+    <ul id="app-13">
+      <li v-for="n in eventNumbers">
+        {{ n }}
+      </li>
+    </ul>
+
+    <div class="split"> app-14</div>
+    <ul id="app-14" v-for="set in sets">
+      <li v-for="n in even(set)">{{n}}</li>
+    </ul>
+
+    <div class="split"> app-15</div>
+    <div id="app-15">
+      <span v-for="n in 10">{{n}}</span>
+    </div>
+
+
+    <div class="split"> app-16</div>
+    <div id="app-16">
+      <button @click.stop="say('hii')">say hi</button>
+      <button @click="say('what')">say what</button>
+    </div>
+
+
+    <div class="split"> app-17</div>
+    <div id="app-17">
+      <button @click.once="warn('Form cannot be summitted yet', $event)">Submit</button>
+    </div>
 
     <!--    这个组件始终没有引用成功，还没找到原因 -->
     <!--    <ol>-->
@@ -78,6 +109,7 @@ export default {
   name: 'App',
   data() {
     return {
+      count:0,
       message: 'Hello Vue!',
       message2: '页面加载于 ' + new Date().toLocaleString(),
       isActive: 0.0,
@@ -92,12 +124,12 @@ export default {
 
       ],
       object : {
-
-
         publish : '中国文艺出版社',
         author: '刘慈欣',
         title: '《三体》',
-      }
+      },
+      numbers: [1, 2, 3, 4, 5],
+      sets:[[1, 2, 3, 4, 5], [6, 7, 8, 9, 10]]
     }
   },
 
@@ -120,6 +152,28 @@ export default {
   methods: {
     switchLogin: function () {
       this.loginType = (this.loginType === 'username') ? 'emal' : 'username';
+    },
+    even: function (numbers) {
+      return numbers.filter(function (number){
+        return number % 2 === 0
+      })
+    },
+    greet: function (event) {
+      alert('hello' + this.name + "!")
+      if (event) {
+        alert(event.target.id + event.target.tagName + event.target.key)
+      }
+    },
+    say:function (msg) {
+      alert(`say ${msg}`)
+    },
+    warn:function (msg, event) {
+      console.log("1,warn: " + event)
+      console.log("2,warn: " + JSON.stringify(event))
+      if (event) {
+        event.preventDefault()
+      }
+      alert(msg)
     }
   },
 
@@ -133,6 +187,11 @@ export default {
         color: `blue`,
         fontSize: '45px'
       }
+    },
+    eventNumbers:function () {
+      return this.numbers.filter(function (number) {
+        return number % 2 === 0
+      })
     }
   },
   components: {
@@ -159,5 +218,10 @@ export default {
 
 .text-danger {
   color: red;
+}
+
+.split {
+  background: #42b983;
+  font-weight: bold;
 }
 </style>
