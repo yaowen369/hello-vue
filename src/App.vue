@@ -1,35 +1,40 @@
 <template>
   <div>
-    <div>
-      {{ message }}
+    <div id="app-1">
+      <button-counter></button-counter>
     </div>
 
+
+    <div class="split"> app-2</div>
     <div id="app-2">
-      <span v-bind:title="message2">
-        鼠标悬停几秒钟查看此处动态绑定的提示信息！
-      </span>
+      <blog-post
+          v-for="post in posts"
+          :key = "post.id"
+          :post="post">
+      </blog-post>
     </div>
 
+    <div class="split"> app-5</div>
     <div id="app-5">
       <button v-on:click="reverseMessage">反转消息</button>
     </div>
 
-    <div class="split"> app-6 </div>
+    <div class="split"> app-6</div>
     <div id="app-6">
       <input v-model="message" placeholder="edit me">
-      <p>输入的message is： {{message}}</p>
+      <p>输入的message is： {{ message }}</p>
     </div>
 
-    <div class="split"> app-7 </div>
+    <div class="split"> app-7</div>
     <div id="app-7">
       <span>Multiline message is:</span>
-      <p style="white-space: pre-line">{{message}}</p>
+      <p style="white-space: pre-line">{{ message }}</p>
       <br>
       <textarea v-model="message" placeholder="add multiple lines"></textarea>
     </div>
 
 
-    <div class="split"> app-8 </div>
+    <div class="split"> app-8</div>
     <div id="app-8">
       <input type="checkbox" id="jack" value="Jack" v-model="checkedNames">
       <label for="jack">Jack</label>
@@ -44,7 +49,7 @@
       <span>Checked names: {{ checkedNames }}</span>
     </div>
 
-    <div class="split"> app-9 </div>
+    <div class="split"> app-9</div>
     <div id="app-9">
       <input type="radio" id="one" value="One" v-model.lazy="picked">
       <label for="one">One</label>
@@ -52,10 +57,10 @@
       <input type="radio" id="two" value="Two" v-model.trim="picked">
       <label for="two">Two</label>
       <br>
-      <span>Picked: {{picked}}</span>
+      <span>Picked: {{ picked }}</span>
     </div>
 
-    <div class="split"> app-10 </div>
+    <div class="split"> app-10</div>
 
     <div>{{ loginType === 'username' }}</div>
     <div style="background:yellow; display: flex; flex-direction: column">
@@ -70,24 +75,24 @@
       <button @click="switchLogin">切换登录方式</button>
     </div>
 
-    <div class="split"> app-11 </div>
+    <div class="split"> app-11</div>
     <div id="app-11">
       <select v-model="selected">
         <option v-for="option in options" v-bind:value="option.value">
-          {{option.text}}
+          {{ option.text }}
         </option>
       </select>
       <span>Selected: {{ selected }}</span>
     </div>
 
-    <div class="split"> app-12 </div>
+    <div class="split"> app-12</div>
     <ul id="app-12">
       <li v-for="(value, key, index) in object">
-        ～ {{ value }} -- {{key}} -- {{index}}
+        ～ {{ value }} -- {{ key }} -- {{ index }}
       </li>
     </ul>
 
-    <div class="split"> app-13 </div>
+    <div class="split"> app-13</div>
     <ul id="app-13">
       <li v-for="n in eventNumbers">
         {{ n }}
@@ -96,12 +101,12 @@
 
     <div class="split"> app-14</div>
     <ul id="app-14" v-for="set in sets">
-      <li v-for="n in even(set)">{{n}}</li>
+      <li v-for="n in even(set)">{{ n }}</li>
     </ul>
 
     <div class="split"> app-15</div>
     <div id="app-15">
-      <span v-for="n in 10">{{n}}</span>
+      <span v-for="n in 10">{{ n }}</span>
     </div>
 
 
@@ -128,12 +133,14 @@
 <script>
 import HelloWorld from './components/HelloWorld.vue';
 import TodoItem from "./components/TodoItem.vue";
+import ButtonCounter from "./components/ButtonCounter.vue";
+import BlogPost from "./components/BlogPost.vue";
 
 export default {
   name: 'App',
   data() {
     return {
-      count:0,
+      count: 0,
       message: '',
       message2: '页面加载于 ' + new Date().toLocaleString(),
       isActive: 0.0,
@@ -147,21 +154,26 @@ export default {
         {message: 'BAR'},
 
       ],
-      object : {
-        publish : '中国文艺出版社',
+      object: {
+        publish: '中国文艺出版社',
         author: '刘慈欣',
         title: '《三体》',
       },
       numbers: [1, 2, 3, 4, 5],
-      sets:[[1, 2, 3, 4, 5], [6, 7, 8, 9, 10]],
-      checkedNames:[ ],
-      picked:null,
-      selected:'',
+      sets: [[1, 2, 3, 4, 5], [6, 7, 8, 9, 10]],
+      checkedNames: [],
+      picked: null,
+      selected: '',
       options: [
         {text: 'One', value: 'A'},
         {text: 'Two', value: 'B'},
         {text: 'Three', value: 'C'},
       ],
+      posts:[
+        {id:1, title:'Blog title1'},
+        {id:2, title:'Blog title2'},
+        {id:3, title:'Blog title3'}
+      ]
     }
   },
 
@@ -186,7 +198,7 @@ export default {
       this.loginType = (this.loginType === 'username') ? 'emal' : 'username';
     },
     even: function (numbers) {
-      return numbers.filter(function (number){
+      return numbers.filter(function (number) {
         return number % 2 === 0
       })
     },
@@ -196,10 +208,10 @@ export default {
         alert(event.target.id + event.target.tagName + event.target.key)
       }
     },
-    say:function (msg) {
+    say: function (msg) {
       alert(`say ${msg}`)
     },
-    warn:function (msg, event) {
+    warn: function (msg, event) {
       console.log("1,warn: " + event)
       console.log("2,warn: " + JSON.stringify(event))
       if (event) {
@@ -220,13 +232,15 @@ export default {
         fontSize: '45px'
       }
     },
-    eventNumbers:function () {
+    eventNumbers: function () {
       return this.numbers.filter(function (number) {
         return number % 2 === 0
       })
     }
   },
   components: {
+    BlogPost,
+    ButtonCounter,
     TodoItem,
     HelloWorld
   }
