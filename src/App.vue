@@ -63,20 +63,20 @@
     </div>
 
 
-    <div class="split"> app-8</div>
-    <div class="split"> app-8</div>
+    <div class="split"> app-8 slot插槽的使用</div>
     <div id="app-8">
-      <input type="checkbox" id="jack" value="Jack" v-model="checkedNames">
-      <label for="jack">Jack</label>
-
-      <input type="checkbox" id="john" value="John" v-model="checkedNames">
-      <label for="john">John</label>
-
-      <input type="checkbox" id="mike" value="Mike" v-model="checkedNames">
-      <label for="mike">Mike</label>
-
-      <br>
-      <span>Checked names: {{ checkedNames }}</span>
+      <Dialog>
+        <span style="background: blue"> 自定义标题</span>
+        <template slot="content">
+          <div style="background: red; color: yellow">
+            这是自定义的内容部分
+          </div>
+        </template>
+        <template slot="footer" slot-scope="props">
+          <button @click="props.closeDialog()">关闭</button>
+        </template>
+       <span style="color: aqua">自定义标题的下面  222 </span>
+      </Dialog>
     </div>
 
     <div class="split"> app-9</div>
@@ -171,6 +171,7 @@ import ComponentC from "./components/ComponentC.vue";
 import Home from "./components/Home.vue";
 import Profile from "./components/Profile.vue";
 import Settings from "./components/Settings.vue";
+import Dialog from "./components/Dialog.vue";
 
 export default {
   name: 'App',
@@ -203,7 +204,6 @@ export default {
       },
       numbers: [1, 2, 3, 4, 5],
       sets: [[1, 2, 3, 4, 5], [6, 7, 8, 9, 10]],
-      checkedNames: [],
       picked: null,
       selected: '',
       options: [
@@ -285,6 +285,7 @@ export default {
     }
   },
   components: {
+    Dialog,
     BlogPost,
     ButtonCounter,
     TodoItem,
