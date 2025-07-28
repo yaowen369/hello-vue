@@ -6,10 +6,11 @@
 
 
     <div class="split"> app-2</div>
-    <div id="app-2">
+    <div id="app-2" :style="{fontSize: postFontSize + 'em'}"  >
       <blog-post
           v-for="post in posts"
           :key = "post.id"
+           v-on:enlarge-text = "onEnlargeText"
           :post="post">
       </blog-post>
     </div>
@@ -170,10 +171,11 @@ export default {
         {text: 'Three', value: 'C'},
       ],
       posts:[
-        {id:1, title:'Blog title1'},
-        {id:2, title:'Blog title2'},
-        {id:3, title:'Blog title3'}
-      ]
+        {id:1, title:'Blog title1', content: 'Content1'},
+        {id:2, title:'Blog title2', content: 'Content2'},
+        {id:3, title:'Blog title3', content: 'Content3'}
+      ],
+      postFontSize: 1
     }
   },
 
@@ -218,6 +220,9 @@ export default {
         event.preventDefault()
       }
       alert(msg)
+    },
+    onEnlargeText:function (enlargeAmount) {
+      this.postFontSize += enlargeAmount
     }
   },
 
