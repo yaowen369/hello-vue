@@ -6,35 +6,64 @@
 
 
     <div class="split"> app-2</div>
-    <div id="app-2" :style="{fontSize: postFontSize + 'em'}"  >
+    <div id="app-2" :style="{fontSize: postFontSize + 'em'}">
       <blog-post
           v-for="post in posts"
-          :key = "post.id"
-           v-on:enlarge-text = "onEnlargeText"
+          :key="post.id"
+          v-on:enlarge-text="onEnlargeText"
           :post="post">
       </blog-post>
     </div>
 
     <div class="split"> app-5</div>
     <div id="app-5">
-      <button v-on:click="reverseMessage">反转消息</button>
+      <!--  动态组件     -->
+      <component :is="currentComponent"></component>
+
+      <!--   按钮用于切换组件   -->
+      <button @click="currentComponent='ComponentA'">加载组件A</button>
+      <button @click="currentComponent='ComponentB'">加载组件B</button>
+      <button @click="currentComponent='ComponentC'">加载组件C</button>
+
     </div>
 
     <div class="split"> app-6</div>
-    <div id="app-6">
-      <input v-model="message" placeholder="edit me">
-      <p>输入的message is： {{ message }}</p>
+    <div id="app-6" class="dynamic-component-demo">
+      <h2>Vue2 动态组件实例</h2>
+      <!--      按钮组，用于切换不同的组件 -->
+      <div class="button-group">
+        <button
+            v-for="(component, index) in components"
+            :key="index"
+            @click="currentComponent = component.name"
+            :class="{active:currentComponent === component.name}"
+        >
+          {{ components.label }}
+        </button>
+      </div>
+
+      <!--      动态组件挂载点 -->
+      <div class="component-container">
+        <keep-alive>
+          <component
+              :is="currentComponent"
+              :message="message"
+              @update-message="updateMessage"
+          ></component>
+        </keep-alive>
+      </div>
+
+
+      <!--       显示当前组件信息 -->
+      <div class="info">
+        <p>当前显示的组件: {{ currentComponent }}</p>
+        <p>共享消息: {{ message }}</p>
+      </div>
+
     </div>
 
-    <div class="split"> app-7</div>
-    <div id="app-7">
-      <span>Multiline message is:</span>
-      <p style="white-space: pre-line">{{ message }}</p>
-      <br>
-      <textarea v-model="message" placeholder="add multiple lines"></textarea>
-    </div>
 
-
+    <div class="split"> app-8</div>
     <div class="split"> app-8</div>
     <div id="app-8">
       <input type="checkbox" id="jack" value="Jack" v-model="checkedNames">
@@ -136,13 +165,25 @@ import HelloWorld from './components/HelloWorld.vue';
 import TodoItem from "./components/TodoItem.vue";
 import ButtonCounter from "./components/ButtonCounter.vue";
 import BlogPost from "./components/BlogPost.vue";
+import ComponentA from "./components/ComponentA.vue";
+import ComponentB from "./components/ComponentB.vue";
+import ComponentC from "./components/ComponentC.vue";
+import Home from "./components/Home.vue";
+import Profile from "./components/Profile.vue";
+import Settings from "./components/Settings.vue";
 
 export default {
   name: 'App',
   data() {
     return {
       count: 0,
-      message: '',
+      message: '这是一条共享信息',
+      currentComponent: 'Home',
+      components: [
+        {name: 'Home', label: '首页'},
+        {name: 'Profile', label: '个人资料'},
+        {name: 'Settings', label: '设置'},
+      ],
       message2: '页面加载于 ' + new Date().toLocaleString(),
       isActive: 0.0,
       errorClass: '',
@@ -170,12 +211,13 @@ export default {
         {text: 'Two', value: 'B'},
         {text: 'Three', value: 'C'},
       ],
-      posts:[
-        {id:1, title:'Blog title1', content: 'Content1'},
-        {id:2, title:'Blog title2', content: 'Content2'},
-        {id:3, title:'Blog title3', content: 'Content3'}
+      posts: [
+        {id: 1, title: 'Blog title1', content: 'Content1'},
+        {id: 2, title: 'Blog title2', content: 'Content2'},
+        {id: 3, title: 'Blog title3', content: 'Content3'}
       ],
-      postFontSize: 1
+      postFontSize: 1,
+
     }
   },
 
@@ -221,16 +263,15 @@ export default {
       }
       alert(msg)
     },
-    onEnlargeText:function (enlargeAmount) {
+    onEnlargeText: function (enlargeAmount) {
       this.postFontSize += enlargeAmount
+    },
+    updateMessage: function (newMsg) {
+      this.message = newMsg
     }
   },
 
   computed: {
-    reverseMessage: function () {
-      console.log('计算属性 computed, ');
-      return this.message.split('').reverse().join('')
-    },
     styleObject: function () {
       return {
         color: `blue`,
@@ -247,12 +288,18 @@ export default {
     BlogPost,
     ButtonCounter,
     TodoItem,
-    HelloWorld
+    HelloWorld,
+    ComponentA,
+    ComponentB,
+    ComponentC,
+    Home,
+    Profile,
+    Settings
   }
 };
 </script>
 
-<style>
+<style scoped>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -274,5 +321,49 @@ export default {
 .split {
   background: #42b983;
   font-weight: bold;
+}
+
+.dynamic-component-demo {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.button-group {
+  margin-bottom: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+button {
+  padding: 8px 16px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  border-radius: 4px;
+  transition: all 0.3s;
+}
+
+button.active {
+  background-color: #42b983;
+  color: white;
+  border-color: #42b983;
+}
+
+.component-container {
+  border: 1px solid #eee;
+  padding: 20px;
+  min-height: 150px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+}
+
+.info {
+  color: #666;
+  font-size: 0.9em;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border-radius: 4px;
 }
 </style>
