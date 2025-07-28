@@ -79,19 +79,32 @@
       </Dialog>
     </div>
 
-    <div class="split"> app-9</div>
+    <div class="split"> app-9 slot插槽的使用2</div>
     <div id="app-9">
-      <input type="radio" id="one" value="One" v-model.lazy="picked">
-      <label for="one">One</label>
-      <br>
-      <input type="radio" id="two" value="Two" v-model.trim="picked">
-      <label for="two">Two</label>
-      <br>
-      <span>Picked: {{ picked }}</span>
+      <my-card >
+        <template #default>
+          <p>这是卡片的主题内容(默认插槽)</p>
+        </template>
+
+        <template #header>
+          <h3>用户信息卡(具名插槽)</h3>
+        </template>
+
+        <template #footer>
+          <button>编辑</button>
+          <button>删除</button>
+        </template>
+
+        <template #list="{item2}">
+          <div class="list-item">
+            <strong>{{ item2.label }}</strong>
+            <span>{{ item2.value}}</span>
+          </div>
+        </template>
+      </my-card>
     </div>
 
     <div class="split"> app-10</div>
-
     <div>{{ loginType === 'username' }}</div>
     <div style="background:yellow; display: flex; flex-direction: column">
       <template v-show="loginType === 'username'">
@@ -172,6 +185,7 @@ import Home from "./components/Home.vue";
 import Profile from "./components/Profile.vue";
 import Settings from "./components/Settings.vue";
 import Dialog from "./components/Dialog.vue";
+import MyCard from "./components/Card.vue";
 
 export default {
   name: 'App',
@@ -204,7 +218,6 @@ export default {
       },
       numbers: [1, 2, 3, 4, 5],
       sets: [[1, 2, 3, 4, 5], [6, 7, 8, 9, 10]],
-      picked: null,
       selected: '',
       options: [
         {text: 'One', value: 'A'},
@@ -285,6 +298,7 @@ export default {
     }
   },
   components: {
+    MyCard,
     Dialog,
     BlogPost,
     ButtonCounter,
@@ -313,10 +327,6 @@ export default {
 
 .active {
   font-size: 40px;
-}
-
-.text-danger {
-  color: red;
 }
 
 .split {
@@ -366,5 +376,35 @@ button.active {
   padding: 10px;
   background-color: #f9f9f9;
   border-radius: 4px;
+}
+
+
+.list-item {
+  padding: 8px 4px;
+  border-bottom: 1px dashed #eee;
+  transition: background-color 0.2s;
+}
+
+.list-item:last-child {
+  border-bottom: none;
+}
+
+.list-item:hover {
+  background-color: #f0f0f0;
+}
+
+button {
+  margin-left: 8px;
+  padding: 4px 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: white;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+button:hover {
+  background-color: #f0f0f0;
+  border-color: #ccc;
 }
 </style>
